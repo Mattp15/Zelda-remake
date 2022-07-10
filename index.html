@@ -12,23 +12,6 @@
 </head>
 <body>
     <canvas id="myCanvas" width="256" height="240"></canvas>
-    <script type="text/javascript">
-        let canvas = document.getElementById("myCanvas");
-        let ctx = canvas.getContext("2d");
-        //document.addEventListener("keydown", keyDownHandler, false);
-        // document.addEventLIstener("keyup", keyUPHandler, false);
-        let fps = 60;
-
-        function draw () {
-            setTimeout(() => {
-                requestAnimationFrame(draw);
-                ctx.fillStyle = "rgb(20,20,20)";
-                ctx.fillRect(0,0,256,240);
-                ///all code goes here
-            },1000/fps);
-        }
-        draw();
-    </script>
-    
+    <script type="text/javascript" src="js/app.js"></script>  
 </body>
 </html>
