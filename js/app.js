@@ -5,13 +5,20 @@ const canvas = document.getElementById("myCanvas");
         //document.addEventListener("keydown", keyDownHandler, false);
         // document.addEventLIstener("keyup", keyUPHandler, false);
         const fps = 60;
-        let worldTiles = new Image();
+        const worldTiles = new Image();
         worldTiles.src = "images/overworld/tiles-overworld.png";
+        const link = new Image();
+        link.src = "images/Characters/link/link.png"
         let rightPressed = false;
         let leftPressed = false;
         let upPressed = false;
         let downPressed = false;
         let lastButtonPressed = "up";
+        let animationCounter = 0;
+        let currentAnimation = 0;
+        let animationSpeed = 10;
+        let linkX = 116;
+        let linkY = 135;
 
         //Full-Screen-Tile-Arrays
         const map7_7 = [
@@ -71,12 +78,28 @@ const canvas = document.getElementById("myCanvas");
                     ctx.drawImage(worldTiles, ((level[i][j]%18) * 17) + 1, (Math.floor(level[i][j]/18) * 17) + 1, 16, 16, j *16, i *16, 16, 16);
                                /* Source image,      (^sx) + sy = top left courner of image on source (sy^),   sWidth = 16(The width of the sub-rectangle of the source image 16 pixels to right of sprite), sHeight = 16(The hight same as previous paramater - stets the bottom location), 
                                 dx, dy(these two paramaters locate the destination on the html to render (so because it's a nested array, it will start at location 
-                                x = 0 * 16 or 0, y = 0 * 16 also 0, resulting in the top left courner of the screen), these final 2 paramaters dictate the pixel size of the image, dWidth=>dHeight respectivly rendering the 16x16 pixel image captured from the source onto the html) 
+                                x = 0 * 16 or 0, y = 0 * 16 also 0, resulting in the top left courner of the screen), 
+                                these final 2 paramaters dictate the pixel size of the image, dWidth=>dHeight respectivly rendering the 16x16 pixel image captured from the source onto the html) 
                                 Seeing as the game field is set to a 256x240 pixels, 240 16x16 pixel blocks, rows of 16, columns of 15  */
                 }
             }
         }
 
+        const drawLink = () => {
+            let speed = 2;
+            animationCounter++;
+
+            if(leftPressed){
+                link -= speed;
+                if(currentAnimation === 0){
+                    ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16);//(source image, x-location top left of wanted sprite, y-location, width of sprite, height of sprite, x-position of the top left courner of where to render the image, y-position, pixel size to render) - re-expressing understanding 
+                } else if(currentAnimation === 1){
+                    ctx.drawImage(link, 30, 30, 16, 16, linkX, linkY, 16, 16)
+                }
+            }
+        }
+
+        //Draw's the playfield
         function draw () {
             setTimeout(() => {
                 requestAnimationFrame(draw);
