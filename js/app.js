@@ -22,15 +22,15 @@ const canvas = document.getElementById("myCanvas");
         let gameMap = null;
 
         class GameObject {
-            constructor(){
-            this.x = 0;
-            this.y = 0;
-            this.width = 0;
-            this.height = 0;
-            this.newMap = 0;
-            this.newLinkX = 0;
-            this.newLinkY = 0;
-            this.isPortal = false;
+            constructor(x, y, width, height, newMap, newLinkX, newLinkY, isPortal){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.newMap = newMap;
+            this.newLinkX = newLinkX;
+            this.newLinkY = newLinkY;
+            this.isPortal = isPortal;
             }
         }
 
@@ -58,6 +58,11 @@ const canvas = document.getElementById("myCanvas");
                 [ 61, 61,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 61, 61],
                 [ 61, 61, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 61, 61],
                 [ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61]];
+                let objects7_7 = [];
+
+                let gO = new GameObject(72, 72, 8, 16, 1, 120, 220, true);
+
+                
             ////////////////////////////////////////////////////////////////////////
         const mapWoodSword = [
                 [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
@@ -75,7 +80,6 @@ const canvas = document.getElementById("myCanvas");
                 [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
                 [ 55, 55, 37, 37, 37, 37, 37, 28, 28, 37, 37, 37, 37, 37, 55, 55],
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
-
                 let gameObjectsWoodSword = [];
         
 
