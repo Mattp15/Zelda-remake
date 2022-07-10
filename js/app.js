@@ -17,7 +17,7 @@ const canvas = document.getElementById("myCanvas");
         let animationSpeed = 10;
         let linkX = 116;
         let linkY = 135;
-        const gameObjects = [];
+        let gameObjects = [];
         const maps = [];
         let gameMap = null;
 
@@ -27,7 +27,7 @@ const canvas = document.getElementById("myCanvas");
             this.y = y;
             this.width = width;
             this.height = height;
-            this.newMap = newMap;
+            this.newMap = newMap;  //This property is used to select the array for the map which will be loaded upon zoning
             this.newLinkX = newLinkX;
             this.newLinkY = newLinkY;
             this.isPortal = isPortal;
@@ -60,9 +60,12 @@ const canvas = document.getElementById("myCanvas");
                 [ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61]];
                 let objects7_7 = [];
 
-                let gO = new GameObject(72, 72, 8, 16, 1, 120, 220, true);
+                let gO = new GameObject(72, 72, 8, 16, 1, 120, 220, true); //creates an object, which reads as a "portal", points link's new location upon zone entry
+                objects7_7.push(gO);//pushes the portal object into an array with the same name as the map-tile-board
 
-                
+                let bundle = new MapBundler(map7_7, objects7_7); //creates an object for the map tile, with each portal location
+                maps.push(bundle);
+
             ////////////////////////////////////////////////////////////////////////
         const mapWoodSword = [
                 [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
@@ -82,7 +85,17 @@ const canvas = document.getElementById("myCanvas");
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
                 let gameObjectsWoodSword = [];
         
-
+        gO = new GameObject(112, 240, 16, 16, 0, 68, 96, true);
+        gameObjectsWoodSword.push(gO);
+        gO = new GameObject(128, 240, 16, 16, 0, 68, 96, true)
+        gameObjectsWoodSword.push(gO);
+        bundle = new MapBundler(mapWoodSword, gameObjectsWoodSword);
+        maps.push(bundle);
+        gameMap = maps[0].map;
+        console.log(gameMap)
+        gameObjects = maps[0].gameObjects;
+        console.log(maps);
+        console.log(gameObjects);
         //Player movement functions
         const keyDownHandler = (e) => {//key-pressed
             if(e.keyCode === 37){//left
@@ -159,7 +172,7 @@ const canvas = document.getElementById("myCanvas");
                         currentAnimation = 0;
                     }
                 }
-            } else if(upPressed && !collision(linkX, linkY - speed, map7_7)){ //up movement
+            } else if(upPressed && !collision(linkX, linkY - speed, gameMap)){ //up movement
                 linkY -= speed; //changes the drawing location on the Y axis, negative for up
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16); 
@@ -203,7 +216,7 @@ const canvas = document.getElementById("myCanvas");
         const collision = (x, y, map) => {  //x and y are linkX and linkY, map is the map, sent from keyDownHandler
             for(let i = 0; i < map.length; i++){ //this is "rectangle rectangle collision" formula
                 for(let j = 0; j < map[i].length; j++){
-                    if(map[i][j] != 2){ //2 is the number associated with the sprite location for link to move on
+                    if(map[i][j] != 2 && map[i][j] != 28){ //2 is the number associated with the sprite location for link to move on
                         if(x <= j*16+ 6 && x+12 >= j*16 && y+10 <= i*16+16 && y+16 >= i*16){//The idea of doing 12 or 10 rather than 16(links sprite size) 
                             return true;                                                    //is to give him some leway to make moving around tarrain easier
                         } 
@@ -213,7 +226,24 @@ const canvas = document.getElementById("myCanvas");
             return false;
         }
 
-
+        //game object collision
+        const gameObjectCollision = (x, y, objects, isLink) => {
+            if(isLink){
+                for(let i = 0; i < objects.length; i++){
+                    if(x <= objects[i].x + objects[i].width && x + 16 >= objects[i].x && y <= objects[i].y + objects[i].height && y + 16 >= objects[i].y){
+                        console.log('inside gameObjectCollision')
+                        if(objects[i].isPortal){
+                            gameMap = maps[objects[i].newMap].map; //changes maps' if link runs into a portal
+                            gameObjects = maps[objects[i].newMap].gameObjects;
+                            console.log(gameMap, 'gameMap in objectCollision');
+                            console.log(gameObjects, 'gameObjects in objectCollision');
+                            linkX = objects[i].newLinkX;
+                            linkY = objects[i].newLinkY;
+                        }
+                    }
+                }
+            }
+        }
 
 
 
@@ -229,10 +259,12 @@ const canvas = document.getElementById("myCanvas");
                 requestAnimationFrame(draw);
                 ctx.fillStyle = "rgb(20,20,20)";
                 ctx.fillRect(0,0,256,240);
-                drawMap(map7_7);
+                drawMap(gameMap);
                 drawLink();
+                gameObjectCollision(linkX, linkY, gameObjects, true);
             },1000/fps);
         }
+        console.log(gameObjects);
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
         draw();
