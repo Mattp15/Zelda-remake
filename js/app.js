@@ -17,6 +17,29 @@ const canvas = document.getElementById("myCanvas");
         let animationSpeed = 10;
         let linkX = 116;
         let linkY = 135;
+        const gameObjects = [];
+        const maps = [];
+        let gameMap = null;
+
+        class GameObject {
+            constructor(){
+            this.x = 0;
+            this.y = 0;
+            this.width = 0;
+            this.height = 0;
+            this.newMap = 0;
+            this.newLinkX = 0;
+            this.newLinkY = 0;
+            this.isPortal = false;
+            }
+        }
+
+        class MapBundler {
+            constructor(m, o){
+                this.map = m;
+                this.gameObjects = o;
+            }
+        }
 
         //Full-Screen-Tile-Arrays
         const map7_7 = [
@@ -35,6 +58,26 @@ const canvas = document.getElementById("myCanvas");
                 [ 61, 61,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 61, 61],
                 [ 61, 61, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 61, 61],
                 [ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61]];
+            ////////////////////////////////////////////////////////////////////////
+        const mapWoodSword = [
+                [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
+                [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
+                [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
+                [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
+                [ 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55],
+                [ 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
+                [ 55, 55, 37, 37, 37, 37, 37, 28, 28, 37, 37, 37, 37, 37, 55, 55],
+                [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
+
+                let gameObjectsWoodSword = [];
+        
 
         //Player movement functions
         const keyDownHandler = (e) => {//key-pressed
@@ -69,12 +112,13 @@ const canvas = document.getElementById("myCanvas");
         const drawMap = level => {
             for(let i = 0; i < level.length; i++){
                 for(let j = 0; j < level[i].length; j++){
-                    ctx.drawImage(worldTiles, ((level[i][j]%18) * 17) + 1, (Math.floor(level[i][j]/18) * 17) + 1, 16, 16, j *16, i *16, 16, 16);
+                    ctx.drawImage(worldTiles,((level[i][j]%18) * 17) + 1, (Math.floor(level[i][j]/18) * 17) + 1, 16, 16, j *16, i *16, 16, 16);
                                /* Source image,      (^sx) + sy = top left courner of image on source (sy^),   sWidth = 16(The width of the sub-rectangle of the source image 16 pixels to right of sprite), sHeight = 16(The hight same as previous paramater - stets the bottom location), 
                                 dx, dy(these two paramaters locate the destination on the html to render (so because it's a nested array, it will start at location 
                                 x = 0 * 16 or 0, y = 0 * 16 also 0, resulting in the top left courner of the screen), 
                                 these final 2 paramaters dictate the pixel size of the image, dWidth=>dHeight respectivly rendering the 16x16 pixel image captured from the source onto the html) 
                                 Seeing as the game field is set to a 256x240 pixels, 240 16x16 pixel blocks, rows of 16, columns of 15  */
+                                
                 }
             }
         }
@@ -83,7 +127,7 @@ const canvas = document.getElementById("myCanvas");
             let speed = 2;
             animationCounter++;
 
-            if(leftPressed){ //left movement
+            if(leftPressed && !collision(linkX - speed, linkY, map7_7)){ //left movement
                 linkX -= speed; //changes the drawing location on the x axis, negative for left
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16);//(source image, x-location top left of wanted sprite, y-location, width of sprite, height of sprite, x-position of the top left courner of where to render the image, y-position, pixel size to render) - re-expressing understanding 
@@ -97,7 +141,7 @@ const canvas = document.getElementById("myCanvas");
                         currentAnimation = 0;
                     }
                 }
-            } else if(rightPressed){ //right movement
+            } else if(rightPressed && !collision(linkX + speed, linkY, map7_7)){ //right movement
                 linkX += speed; //changes the drawing location on the x axis, positive for right
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16);
@@ -111,7 +155,7 @@ const canvas = document.getElementById("myCanvas");
                         currentAnimation = 0;
                     }
                 }
-            } else if(upPressed){ //up movement
+            } else if(upPressed && !collision(linkX, linkY - speed, map7_7)){ //up movement
                 linkY -= speed; //changes the drawing location on the Y axis, negative for up
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16); 
@@ -125,7 +169,7 @@ const canvas = document.getElementById("myCanvas");
                         currentAnimation = 0;
                     }
                 }
-            } else if(downPressed){ //down movement
+            } else if(downPressed && !collision(linkX, linkY + speed, map7_7)){ //down movement
                 linkY += speed; //changes the drawing location on the Y axis, positive for down
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16);
@@ -151,7 +195,30 @@ const canvas = document.getElementById("myCanvas");
                 }
             }
         }
+        //collision detection function
+        const collision = (x, y, map) => {  //x and y are linkX and linkY, map is the map, sent from keyDownHandler
+            for(let i = 0; i < map.length; i++){ //this is "rectangle rectangle collision" formula
+                for(let j = 0; j < map[i].length; j++){
+                    if(map[i][j] != 2){ //2 is the number associated with the sprite location for link to move on
+                        if(x <= j*16+ 6 && x+12 >= j*16 && y+10 <= i*16+16 && y+16 >= i*16){//The idea of doing 12 or 10 rather than 16(links sprite size) 
+                            return true;                                                    //is to give him some leway to make moving around tarrain easier
+                        } 
+                    }
+                }
+            }
+            return false;
+        }
 
+
+
+
+
+
+
+
+
+
+        //event listeners + game loop
         //Draw's the playfield
         function draw () {
             setTimeout(() => {
@@ -162,6 +229,11 @@ const canvas = document.getElementById("myCanvas");
                 drawLink();
             },1000/fps);
         }
-        draw();
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
+        draw();
+
+
+
+
+
