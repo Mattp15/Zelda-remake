@@ -50,16 +50,16 @@ const canvas = document.getElementById("myCanvas");
 
         const keyUpHandler = e => {//key-up (stopped pressing)
             if(e.keyCode == 37){
-                leftPressed = true;
+                leftPressed = false;
                 lastButtonPressed = "left";
             } else if(e.keyCode == 39){//right
-                rightPressed = true;
+                rightPressed = trfalseufalsee;
                 lastButtonPressed = "right";
             } else if(e.keyCode == 38){//up
-                upPressed = true;
+                upPressed = false;
                 lastButtonPressed = "up";
             } else if(e.keyCode == 40){//down
-                downPressed = true;
+                downPressed = false;
                 lastButtonPressed = "down";
             }
         }
