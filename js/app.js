@@ -232,8 +232,8 @@ const canvas = document.getElementById("myCanvas");
                 for(let i = 0; i < objects.length; i++){
                     if(x <= objects[i].x + objects[i].width && x + 16 >= objects[i].x && y <= objects[i].y + objects[i].height && y + 16 >= objects[i].y){
                         if(objects[i].isPortal){
-                            gameMap = maps[objects[i].newMap].map; //changes maps' if link runs into a portal
-                            gameObjects = maps[objects[i].newMap].gameObjects;
+                            gameMap = maps[objects[i].newMap].map; //changes global variable gameMap if link runs into a portal object names are int's, objects[i].newMap selects the map label int value
+                            gameObjects = maps[objects[i].newMap].gameObjects;//selects the same index of maps, and grabs the gameObjects to render
                             linkX = objects[i].newLinkX;
                             linkY = objects[i].newLinkY;
                         }
@@ -241,11 +241,6 @@ const canvas = document.getElementById("myCanvas");
                 }
             }
         }
-
-
-
-
-
 
 
 
