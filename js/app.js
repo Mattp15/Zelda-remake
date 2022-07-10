@@ -2,8 +2,6 @@ const canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
         document.body.style.zoom = "400%";
         document.body.style.marginTop = "5%"
-        //document.addEventListener("keydown", keyDownHandler, false);
-        // document.addEventLIstener("keyup", keyUPHandler, false);
         const fps = 60;
         const worldTiles = new Image();
         worldTiles.src = "images/overworld/tiles-overworld.png";
@@ -39,35 +37,31 @@ const canvas = document.getElementById("myCanvas");
                 [ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61]];
 
         //Player movement functions
-        const keyDownHandler = e => {//key-pressed
-            if(e.keyCode == 37){//left
+        const keyDownHandler = (e) => {//key-pressed
+            if(e.keyCode === 37){//left
                 leftPressed = true;
                 lastButtonPressed = "left";
-            } else if(e.keyCode == 39){//right
+            } else if(e.keyCode === 39){//right
                 rightPressed = true;
                 lastButtonPressed = "right";
-            } else if(e.keyCode == 38){//up
+            } else if(e.keyCode === 38){//up
                 upPressed = true;
                 lastButtonPressed = "up";
-            } else if(e.keyCode == 40){//down
+            } else if(e.keyCode === 40){//down
                 downPressed = true;
                 lastButtonPressed = "down";
             }
         }
 
-        const keyUpHandler = e => {//key-up (stopped pressing)
-            if(e.keyCode == 37){
+        const keyUpHandler = (e) => {//key-up (stopped pressing)
+            if(e.keyCode === 37){//left
                 leftPressed = false;
-                lastButtonPressed = "left";
-            } else if(e.keyCode == 39){//right
-                rightPressed = trfalseufalsee;
-                lastButtonPressed = "right";
-            } else if(e.keyCode == 38){//up
-                upPressed = false;
-                lastButtonPressed = "up";
-            } else if(e.keyCode == 40){//down
-                downPressed = false;
-                lastButtonPressed = "down";
+            } else if(e.keyCode === 39){//right
+                rightPressed = false;
+            } else if(e.keyCode === 38){//up
+                upPressed = false;          
+            } else if(e.keyCode === 40){//down
+                downPressed = false;  
             }
         }
 
@@ -89,12 +83,71 @@ const canvas = document.getElementById("myCanvas");
             let speed = 2;
             animationCounter++;
 
-            if(leftPressed){
-                link -= speed;
+            if(leftPressed){ //left movement
+                linkX -= speed; //changes the drawing location on the x axis, negative for left
                 if(currentAnimation === 0){
                     ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16);//(source image, x-location top left of wanted sprite, y-location, width of sprite, height of sprite, x-position of the top left courner of where to render the image, y-position, pixel size to render) - re-expressing understanding 
                 } else if(currentAnimation === 1){
                     ctx.drawImage(link, 30, 30, 16, 16, linkX, linkY, 16, 16)
+                }
+                if(animationCounter >= 6){
+                    currentAnimation++;
+                    animationCounter = 0;
+                    if(currentAnimation > 1){
+                        currentAnimation = 0;
+                    }
+                }
+            } else if(rightPressed){ //right movement
+                linkX += speed; //changes the drawing location on the x axis, positive for right
+                if(currentAnimation === 0){
+                    ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16);
+                } else if(currentAnimation === 1){
+                    ctx.drawImage(link, 91, 30, 16, 16, linkX, linkY, 16, 16)
+                }//there are 2 images of link "moving", this if else determains which image to render based on the current state of (currentAnimation)
+                if(animationCounter >= 6){
+                    currentAnimation++;
+                    animationCounter = 0;
+                    if(currentAnimation > 1){
+                        currentAnimation = 0;
+                    }
+                }
+            } else if(upPressed){ //up movement
+                linkY -= speed; //changes the drawing location on the Y axis, negative for up
+                if(currentAnimation === 0){
+                    ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16); 
+                } else if(currentAnimation === 1){
+                    ctx.drawImage(link, 62, 30, 16, 16, linkX, linkY, 16, 16)
+                }
+                if(animationCounter >= 6){
+                    currentAnimation++;
+                    animationCounter = 0;
+                    if(currentAnimation > 1){
+                        currentAnimation = 0;
+                    }
+                }
+            } else if(downPressed){ //down movement
+                linkY += speed; //changes the drawing location on the Y axis, positive for down
+                if(currentAnimation === 0){
+                    ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16);
+                } else if(currentAnimation === 1){
+                    ctx.drawImage(link, 0, 30, 16, 16, linkX, linkY, 16, 16)
+                }
+                if(animationCounter >= 6){
+                    currentAnimation++;
+                    animationCounter = 0;
+                    if(currentAnimation > 1){
+                        currentAnimation = 0;
+                    }
+                }
+            } else {
+                if(lastButtonPressed === 'left'){
+                    ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16)//retains left facing image of Link
+                } else if(lastButtonPressed === 'right'){
+                    ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16)//retains right facing image of Link
+                } else if(lastButtonPressed === 'up'){
+                    ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16)//retains up facing image of Link
+                } else if(lastButtonPressed === 'down'){
+                    ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16)//retains down facing image of Link
                 }
             }
         }
@@ -106,6 +159,9 @@ const canvas = document.getElementById("myCanvas");
                 ctx.fillStyle = "rgb(20,20,20)";
                 ctx.fillRect(0,0,256,240);
                 drawMap(map7_7);
+                drawLink();
             },1000/fps);
         }
         draw();
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventLIstener("keyup", keyUpHandler, false);
