@@ -30,7 +30,8 @@ const canvas = document.getElementById("myCanvas");
                 for(let j = 0; j < level[i].length; j++){
                     ctx.drawImage(worldTiles, ((level[i][j]%18) * 17) + 1,//x-axis of the sprite image
                     (Math.floor(level[i][j]/18) * 17) + 1, //y-axis of the sprite image
-                    16, 16, j *16, i *16, 16, 16);//width, height, x-position(columns), y-position(rows), map size 16x16
+                    16, 16, j *16, i *16, 16, 16);//provided image location grabber
+                    //width, height, x-position(columns), y-position(rows), sprite dimensions 16x16
                 }
             }
         }
