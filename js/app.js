@@ -59,7 +59,7 @@ const canvas = document.getElementById("myCanvas");
             } else if(e.keyCode === 39){//right
                 rightPressed = false;
             } else if(e.keyCode === 38){//up
-                upPressed = false;          
+                upPressed = false;         
             } else if(e.keyCode === 40){//down
                 downPressed = false;  
             }
@@ -164,4 +164,4 @@ const canvas = document.getElementById("myCanvas");
         }
         draw();
         document.addEventListener("keydown", keyDownHandler, false);
-        document.addEventLIstener("keyup", keyUpHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
