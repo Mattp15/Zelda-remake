@@ -115,11 +115,21 @@
                 [ 55, 55, 37, 37, 37, 37, 37, 28, 28, 37, 37, 37, 37, 37, 55, 55],
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
         let gameObjectsWoodSword = [];
-
-        gO = new EverythingElse((4*16+8), (8*16), 16, 16, 0, 0, false, 0, true);
+            //left Flame
+        gO = new EverythingElse((4*16+8), (8*16), 16, 16);
+        gO.isFlame = true;
         gameObjectsWoodSword.push(gO);
-        gO = new EverythingElse((10*16+8), (8*16), 16, 16, 0, 0, false, 0, true);
+            //oldMan
+        gO = new EverythingElse((7*16+8), (8*16), 16, 16);
+        isOldMan = true;
+            //right Flame
+        gO = new EverythingElse((4*16+8), (8*16), 16, 16);
+        gO.isFlame = true;
         gameObjectsWoodSword.push(gO);
+            //sword
+        gO = new EverythingElse((8*16+8), (9.5*16), 8, 16)
+        gO.isPickUpItem = true;
+        gO.pickUpItemNum = 14; 
         
         gO = new Portal(112, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
         gameObjectsWoodSword.push(gO);
@@ -176,7 +186,16 @@
                 }
             }
         }
+        //draws game objects into the game
+        const drawGameObjects = () => {
+            for(let i = 0; i < objects.length; i++){
+                if(gameObjects[i].isPickupItem){
+                    
+                }
+            }
+        }
 
+        //draw's link into the game
         const drawLink = () => {
             let speed = 2;
             animationCounter++;
