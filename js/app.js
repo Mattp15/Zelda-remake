@@ -41,42 +41,29 @@
             this.isPortal = isPortal;
             }
         }
-        class IsText extends GameObject{
-            constructor(x, y, width, height, counter, imageNum, isText, line1Full, line2Full, line1Current, line2Current, line1X, line1Y, line2X, line2Y){
+        class EverythingElse extends GameObject {
+            constructor(x, y, width, height){
             super(x, y, width, height);
-            this.counter = counter;
-            this.imageNum = imageNum;
-            this.isText = isText;
-            this.line1Full = line1Full;
-            this.line2Full = line2Full;
-            this.line1Current = line1Current;
-            this.line2Current = line2Current;
-            this.line1X = line1X;
-            this.line1Y = line1Y;
-            this.line1X = line2X;
-            this.line1Y = line2Y;
-            }
-        }
-        class NPC extends GameObject{
-            constructor(x, y, width, height, counter, imageNum, isOldWoman){
-            super(x, y, width, height);
-            this.counter = counter;
-            this.imageNum = imageNum;
-            this.isOldMan = isOldMan;
-            this.isOldWoman = isOldWoman;
-            }
-        class Item extends GameObject{
-            constructor(x, y, width, height, counter, imageNum, isPickUpItem, pickUpItemNum = 0, isFlame = false){
-            super(x, y, width, height);
-            this.counter = counter;
-            this.imageNum = imageNum;
-            this.isPickUpItem = isPickUpItem;
-            this.pickUpItemNum = pickUpItemNum;
-            this.isFlame = isFlame;
+            this.isText = false;
+            this.line1Full = "line1Full";
+            this.line2Full = "line2Full";
+            this.line1Current = "line1Current";
+            this.line2Current = "line2Current";
+            this.line1X = 0;
+            this.line1Y = 0;
+            this.line1X = 0;
+            this.line1Y = 0;
+            this.isOldMan = false;
+            this.isOldWoman = false;
+            this.counter = 0;
+            this.imageNum = 0;
+            this.isPickUpItem = false;
+            this.pickUpItemNum = 0;
+            this.isFlame = false;
             }
         }
             
-        }
+        
         class MapBundler {
             constructor(m, o){
                 this.map = m;
@@ -127,7 +114,12 @@
                 [ 55, 55, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 55, 55],
                 [ 55, 55, 37, 37, 37, 37, 37, 28, 28, 37, 37, 37, 37, 37, 55, 55],
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
-                let gameObjectsWoodSword = [];
+        let gameObjectsWoodSword = [];
+
+        gO = new EverythingElse((4*16+8), (8*16), 16, 16, 0, 0, false, 0, true);
+        gameObjectsWoodSword.push(gO);
+        gO = new EverythingElse((10*16+8), (8*16), 16, 16, 0, 0, false, 0, true);
+        gameObjectsWoodSword.push(gO);
         
         gO = new Portal(112, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
         gameObjectsWoodSword.push(gO);
