@@ -231,6 +231,9 @@ const canvas = document.getElementById("myCanvas");
             if(isLink){
                 for(let i = 0; i < objects.length; i++){
                     if(x <= objects[i].x + objects[i].width && x + 16 >= objects[i].x && y <= objects[i].y + objects[i].height && y + 16 >= objects[i].y){
+                        //This checks link's location (x,y) and compares it to the(x location, width ** y location, height)
+                        //x <= objects[i]x location value + it's width && x+16 for link's hitbox location greaterORequal objectXlocation AND the same principal for Y
+                        //note to self::Study this logic more
                         if(objects[i].isPortal){
                             gameMap = maps[objects[i].newMap].map; //changes global variable gameMap if link runs into a portal object names are int's, objects[i].newMap selects the map label int value
                             gameObjects = maps[objects[i].newMap].gameObjects;//selects the same index of maps, and grabs the gameObjects to render
