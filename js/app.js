@@ -1,4 +1,4 @@
-const canvas = document.getElementById("myCanvas");
+        const canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
         document.body.style.zoom = "400%";
         document.body.style.marginTop = "5%"
@@ -20,20 +20,63 @@ const canvas = document.getElementById("myCanvas");
         let gameObjects = [];
         const maps = [];
         let gameMap = null;
+        let lastPickUpItem = 0;
+        let playPickupItemAnimation = false;
 
+            //classes
         class GameObject {
-            constructor(x, y, width, height, newMap, newLinkX, newLinkY, isPortal){
+            constructor(x, y, width, height){
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
+            }
+        }
+        class Portal extends GameObject {
+            constructor(x, y, width, height, newMap, newLinkX, newLinkY, isPortal){
+            super(x, y, width, height);
             this.newMap = newMap;  //This property is used to select the array for the map which will be loaded upon zoning
             this.newLinkX = newLinkX;
             this.newLinkY = newLinkY;
             this.isPortal = isPortal;
             }
         }
-
+        class IsText extends GameObject{
+            constructor(x, y, width, height, counter, imageNum, isText, line1Full, line2Full, line1Current, line2Current, line1X, line1Y, line2X, line2Y){
+            super(x, y, width, height);
+            this.counter = counter;
+            this.imageNum = imageNum;
+            this.isText = isText;
+            this.line1Full = line1Full;
+            this.line2Full = line2Full;
+            this.line1Current = line1Current;
+            this.line2Current = line2Current;
+            this.line1X = line1X;
+            this.line1Y = line1Y;
+            this.line1X = line2X;
+            this.line1Y = line2Y;
+            }
+        }
+        class NPC extends GameObject{
+            constructor(x, y, width, height, counter, imageNum, isOldWoman){
+            super(x, y, width, height);
+            this.counter = counter;
+            this.imageNum = imageNum;
+            this.isOldMan = isOldMan;
+            this.isOldWoman = isOldWoman;
+            }
+        class Item extends GameObject{
+            constructor(x, y, width, height, counter, imageNum, isPickUpItem, pickUpItemNum = 0, isFlame = false){
+            super(x, y, width, height);
+            this.counter = counter;
+            this.imageNum = imageNum;
+            this.isPickUpItem = isPickUpItem;
+            this.pickUpItemNum = pickUpItemNum;
+            this.isFlame = isFlame;
+            }
+        }
+            
+        }
         class MapBundler {
             constructor(m, o){
                 this.map = m;
@@ -41,6 +84,7 @@ const canvas = document.getElementById("myCanvas");
             }
         }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////Map bundle setup
         //Full-Screen-Tile-Arrays
         const map7_7 = [
                 [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
@@ -60,13 +104,13 @@ const canvas = document.getElementById("myCanvas");
                 [ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61]];
                 let objects7_7 = [];
 
-                let gO = new GameObject(72, 72, 8, 16, 1, 120, 220, true); //Location of sprite(28), creates an object to detect link on that tile
+                let gO = new Portal(72, 72, 8, 16, 1, 120, 220, true); //Location of sprite(28), creates an object to detect link on that tile
                 objects7_7.push(gO);//pushes the portal object into an array with the same name as the map-tile-board
 
                 let bundle = new MapBundler(map7_7, objects7_7); //creates an object for the map tile, with each portal location[map7_7, objects7_7]
                 maps.push(bundle);
 
-            ////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////this is as dry as I think these can be, Create tileset array => creat new GameObject class for portals, and object locations? Bundle them together into an array of objects for access
         const mapWoodSword = [
                 [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
                 [ 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
@@ -85,17 +129,18 @@ const canvas = document.getElementById("myCanvas");
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
                 let gameObjectsWoodSword = [];
         
-        gO = new GameObject(112, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
+        gO = new Portal(112, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
         gameObjectsWoodSword.push(gO);
-        gO = new GameObject(128, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
+        gO = new Portal(128, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
         gameObjectsWoodSword.push(gO);
         bundle = new MapBundler(mapWoodSword, gameObjectsWoodSword);
         maps.push(bundle);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         gameMap = maps[0].map;
-        console.log(gameMap)
         gameObjects = maps[0].gameObjects;
-        console.log(maps, 'maps');
-        // console.log(gameObjects);
+
         //Player movement functions
         const keyDownHandler = (e) => {//key-pressed
             if(e.keyCode === 37){//left
