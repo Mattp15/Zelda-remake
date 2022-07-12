@@ -7,6 +7,12 @@
         worldTiles.src = "images/overworld/tiles-overworld.png";
         const link = new Image();
         link.src = "images/Characters/link/link.png"
+        const hud = new Image();
+        hud.src = "images/overworld/pause-screen.png";
+        const characterFront = new Image();
+        characterFront.src = "images/Characters/peaceful/peaceful.png"
+        const characterBack = new Image();
+        characterBack.src = "images/Characters/peaceful/peaceful-backs.png";
         let rightPressed = false;
         let leftPressed = false;
         let upPressed = false;
@@ -22,6 +28,7 @@
         let gameMap = null;
         let lastPickUpItem = 0;
         let playPickupItemAnimation = false;
+        
 
             //classes
         class GameObject {
@@ -137,6 +144,8 @@
         gameObjectsWoodSword.push(gO);
         bundle = new MapBundler(mapWoodSword, gameObjectsWoodSword);
         maps.push(bundle);
+
+        //Is this good practice to use let gO to make new objects to push them into an array then change the gO value to push again?
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -190,7 +199,55 @@
         const drawGameObjects = () => {
             for(let i = 0; i < objects.length; i++){
                 if(gameObjects[i].isPickupItem){
-                    
+                    //0 - boomerang
+                    // 1= bomb
+                    //2= bow and arrow
+                    //3 = candle
+                    //4 = flute
+                    //5 = meat
+                    //6 potion(red or blue)
+                    //7 magic rod
+                    //8 raft
+                    //9 book of magic
+                    //10 ring
+                    //11 ladder
+                    //12 key
+                    //13 bracelet
+                    //14 wood sword
+                    //where da hearts, magic refils
+                    switch(gameObjects[i].pickUpItemNum){
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            break;
+                        case 10:
+                            break;
+                        case 11:
+                            break;
+                        case 12:
+                            break;
+                        case 13:
+                            break;
+                        case 14:
+                            ctx.drawImage(hud, 555, 137, 8, 16, gameObjects[i].x, gameObjects[i].y, 8, 16);
+                            break;
+                    }
                 }
             }
         }
