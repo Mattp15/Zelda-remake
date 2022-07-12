@@ -307,72 +307,113 @@
         const drawLink = () => {
             let speed = 2;
             animationCounter++;
+            if(playPickupItemAnimation){
+                if(animationCounter < 150){
+                    ctx.drawImage(link, 1, 150, 16, 16, linkX, linkY, 16, 16);
+                } else {
+                    playPickupItemAnimation = false;
+                }
+                switch(lastPickUpItem){
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    case 12:
+                        break;
+                    case 13:
+                        break;
+                    case 14:
+                        ctx.drawImage(hud, 555, 137, 8, 16, linkX-2, linkY-14, 8, 16);
+                        break;
+                }
 
-            if(leftPressed && !collision(linkX - speed, linkY, gameMap)){ //left movement
-                linkX -= speed; //changes the drawing location on the x axis, negative for left
-                if(currentAnimation === 0){
-                    ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16);//(source image, x-location top left of wanted sprite, y-location, width of sprite, height of sprite, x-position of the top left courner of where to render the image, y-position, pixel size to render) - re-expressing understanding 
-                } else if(currentAnimation === 1){
-                    ctx.drawImage(link, 30, 30, 16, 16, linkX, linkY, 16, 16)
-                }
-                if(animationCounter >= 6){
-                    currentAnimation++;
-                    animationCounter = 0;
-                    if(currentAnimation > 1){
-                        currentAnimation = 0;
-                    }
-                }
-            } else if(rightPressed && !collision(linkX + speed, linkY, gameMap)){ //right movement
-                linkX += speed; //changes the drawing location on the x axis, positive for right
-                if(currentAnimation === 0){
-                    ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16);
-                } else if(currentAnimation === 1){
-                    ctx.drawImage(link, 91, 30, 16, 16, linkX, linkY, 16, 16)
-                }//there are 2 images of link "moving", this if else determains which image to render based on the current state of (currentAnimation)
-                if(animationCounter >= 6){
-                    currentAnimation++;
-                    animationCounter = 0;
-                    if(currentAnimation > 1){
-                        currentAnimation = 0;
-                    }
-                }
-            } else if(upPressed && !collision(linkX, linkY - speed, gameMap)){ //up movement
-                linkY -= speed; //changes the drawing location on the Y axis, negative for up
-                if(currentAnimation === 0){
-                    ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16); 
-                } else if(currentAnimation === 1){
-                    ctx.drawImage(link, 62, 30, 16, 16, linkX, linkY, 16, 16)
-                }
-                if(animationCounter >= 6){
-                    currentAnimation++;
-                    animationCounter = 0;
-                    if(currentAnimation > 1){
-                        currentAnimation = 0;
-                    }
-                }
-            } else if(downPressed && !collision(linkX, linkY + speed, gameMap)){ //down movement
-                linkY += speed; //changes the drawing location on the Y axis, positive for down
-                if(currentAnimation === 0){
-                    ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16);
-                } else if(currentAnimation === 1){
-                    ctx.drawImage(link, 0, 30, 16, 16, linkX, linkY, 16, 16)
-                }
-                if(animationCounter >= 6){
-                    currentAnimation++;
-                    animationCounter = 0;
-                    if(currentAnimation > 1){
-                        currentAnimation = 0;
-                    }
-                }
             } else {
-                if(lastButtonPressed === 'left'){
-                    ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16)//retains left facing image of Link
-                } else if(lastButtonPressed === 'right'){
-                    ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16)//retains right facing image of Link
-                } else if(lastButtonPressed === 'up'){
-                    ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16)//retains up facing image of Link
-                } else if(lastButtonPressed === 'down'){
-                    ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16)//retains down facing image of Link
+                if(leftPressed && !collision(linkX - speed, linkY, gameMap)){ //left movement
+                    linkX -= speed; //changes the drawing location on the x axis, negative for left
+                    if(currentAnimation === 0){
+                        ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16);//(source image, x-location top left of wanted sprite, y-location, width of sprite, height of sprite, x-position of the top left courner of where to render the image, y-position, pixel size to render) - re-expressing understanding 
+                    } else if(currentAnimation === 1){
+                    ctx.drawImage(link, 30, 30, 16, 16, linkX, linkY, 16, 16)
+                    }
+                    if(animationCounter >= 6){
+                        currentAnimation++;
+                        animationCounter = 0;
+                        if(currentAnimation > 1){
+                            currentAnimation = 0;
+                        }
+                    }
+                } else if(rightPressed && !collision(linkX + speed, linkY, gameMap)){ //right movement
+                    linkX += speed; //changes the drawing location on the x axis, positive for right
+                    if(currentAnimation === 0){
+                    ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16);
+                    } else if(currentAnimation === 1){
+                        ctx.drawImage(link, 91, 30, 16, 16, linkX, linkY, 16, 16)
+                    }//there are 2 images of link "moving", this if else determains which image to render based on the current state of (currentAnimation)
+                    if(animationCounter >= 6){
+                        currentAnimation++;
+                        animationCounter = 0;
+                        if(currentAnimation > 1){
+                            currentAnimation = 0;
+                        }
+                    }
+                } else if(upPressed && !collision(linkX, linkY - speed, gameMap)){ //up movement
+                    linkY -= speed; //changes the drawing location on the Y axis, negative for up
+                    if(currentAnimation === 0){
+                        ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16); 
+                    } else if(currentAnimation === 1){
+                        ctx.drawImage(link, 62, 30, 16, 16, linkX, linkY, 16, 16)
+                    }
+                    if(animationCounter >= 6){
+                        currentAnimation++;
+                        animationCounter = 0;
+                        if(currentAnimation > 1){
+                            currentAnimation = 0;
+                            }
+                    }
+                } else if(downPressed && !collision(linkX, linkY + speed, gameMap)){ //down movement
+                    linkY += speed; //changes the drawing location on the Y axis, positive for down
+                    if(currentAnimation === 0){
+                        ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16);
+                    } else if(currentAnimation === 1){
+                        ctx.drawImage(link, 0, 30, 16, 16, linkX, linkY, 16, 16)
+                    }
+                    if(animationCounter >= 6){
+                        currentAnimation++;
+                        animationCounter = 0;
+                        if(currentAnimation > 1){
+                            currentAnimation = 0;
+                        }
+                    }
+                } else {
+                    if(lastButtonPressed === 'left'){
+                        ctx.drawImage(link, 30, 0, 16, 16, linkX, linkY, 16, 16)//retains left facing image of Link
+                    } else if(lastButtonPressed === 'right'){
+                        ctx.drawImage(link, 91, 0, 16, 16, linkX, linkY, 16, 16)//retains right facing image of Link
+                    } else if(lastButtonPressed === 'up'){
+                        ctx.drawImage(link, 62, 0, 16, 16, linkX, linkY, 16, 16)//retains up facing image of Link
+                    } else if(lastButtonPressed === 'down'){
+                        ctx.drawImage(link, 0, 0, 16, 16, linkX, linkY, 16, 16)//retains down facing image of Link
+                    }
                 }
             }
         }
@@ -403,6 +444,60 @@
                             gameObjects = maps[objects[i].newMap].gameObjects;//selects the same index of maps, and grabs the gameObjects to render
                             linkX = objects[i].newLinkX;
                             linkY = objects[i].newLinkY;
+                        } 
+                        if(gameObjects[i].isPickUpItem){
+                            playPickupItemAnimation = true;
+                            //0 - boomerang
+                            // 1= bomb
+                            //2= bow and arrow
+                            //3 = candle
+                            //4 = flute
+                            //5 = meat
+                            //6 potion(red or blue)
+                            //7 magic rod
+                            //8 raft
+                            //9 book of magic
+                            //10 ring
+                            //11 ladder
+                            //12 key
+                            //13 bracelet
+                            //14 wood sword
+                            //where da hearts, magic refils
+                            switch(gameObjects[i].pickUpItemNum){
+                                case 0:
+                                    break;
+                                case 1:
+                                    break;
+                                case 2:
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    break;
+                                case 5:
+                                    break;
+                                case 6:
+                                    break;
+                                case 7:
+                                    break;
+                                case 8:
+                                    break;
+                                case 9:
+                                    break;
+                                case 10:
+                                    break;
+                                case 11:
+                                    break;
+                                case 12:
+                                    break;
+                                case 13:
+                                    break;
+                                case 14:
+                                    lastPickUpItem = 14;
+                                    swordEquipped = 1;
+                                    break;
+                            }
+                            objects.splice(i, 1);
                         }
                     }
                 }
