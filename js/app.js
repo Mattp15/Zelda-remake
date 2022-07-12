@@ -267,17 +267,21 @@
                 }
                 if(gameObjects[i].isText){
                     gameObjects[i].counter += 1;
-                    if(gameObjects[i].counter%5 === 0){
+                    if(gameObjects[i].counter%5 === 0){//counter and modulo controll the speed of the text
                         if(gameObjects[i].line1Full.length != gameObjects[i].line1Current.length){
                             gameObjects[i].line1Current = gameObjects[i].line1Full.substring(0, gameObjects[i].line1Current.length + 1);
+
                         } else if(gameObjects[i].line2Full.length != gameObjects[i].line2Current.length){
                             gameObjects[i].line2Current = gameObjects[i].line2Full.substring(0, gameObjects[i].line2Current.length + 1);
-                        }//sit on this 
+                        }//Every pass is adding a letter to current line, which increases the lenght, which add's a letterfor the next iteration.
                     }
                     ctx.fillStyle = "white";
                     ctx.font = "12px Arial";
+                    // console.log(gameObjects[i].line1Current, 'line1current');
+                    // console.log(gameObjects[i].line2Current, 'line2current');
                     ctx.fillText(gameObjects[i].line1Current, gameObjects[i].line1X, gameObjects[i].line1Y);//research this
                     ctx.fillText(gameObjects[i].line2Current, gameObjects[i].line2X, gameObjects[i].line2Y);
+                                //Pulls the text from the object, x-position for draw, y-position for draw. 
                 }
                 if(gameObjects[i].isFlame){
                     gameObjects[i].counter++;
