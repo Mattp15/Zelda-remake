@@ -1,7 +1,8 @@
         const canvas = document.getElementById("myCanvas");
+        document.body.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
         let ctx = canvas.getContext("2d");
-        document.body.style.zoom = "400%";
-        document.body.style.marginTop = "5%"
+        document.body.style.zoom = "375%";
+        document.body.style.marginTop = "2%"
         const fps = 60;
         const worldTiles = new Image();
         worldTiles.src = "images/overworld/tiles-overworld.png";
@@ -51,15 +52,6 @@
         class EverythingElse extends GameObject {
             constructor(x, y, width, height){
             super(x, y, width, height);
-            this.isText = false;
-            this.line1Full = "line1Full";
-            this.line2Full = "line2Full";
-            this.line1Current = "line1Current";
-            this.line2Current = "line2Current";
-            this.line1X = 0;
-            this.line1Y = 0;
-            this.line1X = 0;
-            this.line1Y = 0;
             this.isOldMan = false;
             this.isOldWoman = false;
             this.counter = 0;
@@ -69,7 +61,20 @@
             this.isFlame = false;
             }
         }
-            
+        class TextClass {
+            constructor(isText){
+            this.isText = isText;
+            this.line1Full = "";
+            this.line2Full = "";
+            this.line1Current = "";
+            this.line2Current = "";
+            this.line1X = 0;
+            this.line1Y = 0;
+            this.line1X = 0;
+            this.line1Y = 0;
+            this.counter = 0;
+        } 
+    }
         
         class MapBundler {
             constructor(m, o){
@@ -123,20 +128,31 @@
                 [ 55, 55, 55, 55, 55, 55, 55, 28, 28, 55, 55, 55, 55, 55, 55, 55]];
         let gameObjectsWoodSword = [];
             //left Flame
-        gO = new EverythingElse((4*16+8), (8*16), 16, 16);
+        gO = new EverythingElse((10*16+8), (8*16), 16, 16);
         gO.isFlame = true;
         gameObjectsWoodSword.push(gO);
             //oldMan
         gO = new EverythingElse((7*16+8), (8*16), 16, 16);
-        isOldMan = true;
+        gO.isOldMan = true;
+        gameObjectsWoodSword.push(gO);
             //right Flame
         gO = new EverythingElse((4*16+8), (8*16), 16, 16);
         gO.isFlame = true;
         gameObjectsWoodSword.push(gO);
             //sword
-        gO = new EverythingElse((8*16+8), (9.5*16), 8, 16)
+        gO = new EverythingElse((8*16-4), (9.5*16), 8, 16)
         gO.isPickUpItem = true;
         gO.pickUpItemNum = 14; 
+        gameObjectsWoodSword.push(gO);
+            //cave text
+        gO = new TextClass(true);
+        gO.line1Full = "IT'S DANGEROUS TO GO";
+        gO.line2Full = "ALONE! TAKE THIS.";
+        gO.line1X = 3*16; //results in 3 16x16 squares down
+        gO.line1Y = 7*16; //results in 7 16x16 squres across
+        gO.line2X = 4*16;
+        gO.line2Y = 8*16-6;//He said he played with this to get it centered, that's why it has the minus 6
+        gameObjectsWoodSword.push(gO);
         
         gO = new Portal(112, 240, 16, 16, 0, 68, 96, true); //location of portal out of map 1(mapWoodSword);
         gameObjectsWoodSword.push(gO);
@@ -197,8 +213,8 @@
         }
         //draws game objects into the game
         const drawGameObjects = () => {
-            for(let i = 0; i < objects.length; i++){
-                if(gameObjects[i].isPickupItem){
+            for(let i = 0; i < gameObjects.length; i++){
+                if(gameObjects[i].isPickUpItem){
                     //0 - boomerang
                     // 1= bomb
                     //2= bow and arrow
@@ -248,6 +264,41 @@
                             ctx.drawImage(hud, 555, 137, 8, 16, gameObjects[i].x, gameObjects[i].y, 8, 16);
                             break;
                     }
+                }
+                if(gameObjects[i].isText){
+                    gameObjects[i].counter += 1;
+                    if(gameObjects[i].counter%5 === 0){
+                        if(gameObjects[i].line1Full.length != gameObjects[i].line1Current.length){
+                            gameObjects[i].line1Current = gameObjects[i].line1Full.substring(0, gameObjects[i].line1Current.length + 1);
+                        } else if(gameObjects[i].line2Full.length != gameObjects[i].line2Current.length){
+                            gameObjects[i].line2Current = gameObjects[i].line2Full.substring(0, gameObjects[i].line2Current.length + 1);
+                        }//sit on this 
+                    }
+                    ctx.fillStyle = "white";
+                    ctx.font = "12px Arial";
+                    ctx.fillText(gameObjects[i].line1Current, gameObjects[i].line1X, gameObjects[i].line1Y);//research this
+                    ctx.fillText(gameObjects[i].line2Current, gameObjects[i].line2X, gameObjects[i].line2Y);
+                }
+                if(gameObjects[i].isFlame){
+                    gameObjects[i].counter++;
+                    if(gameObjects[i].counter%5 === 0){
+                        gameObjects[i].imageNum++;
+                    }
+                    if(gameObjects[i].imageNum>1){
+                        gameObjects[i].imageNum = 1;
+                    }
+                    if(gameObjects[i].imageNum === 0){
+                        ctx.drawImage(characterBack, 158, 11, 16, 16, gameObjects[i].x, gameObjects[i].y, 16, 16);
+                    }
+                    if(gameObjects[i].imageNum === 1){
+                        ctx.drawImage(characterFront, 52, 11, 16, 16, gameObjects[i].x, gameObjects[i].y, 16, 16);
+                    }
+                }
+                if(gameObjects[i].isOldMan){
+                    ctx.drawImage(characterFront, 1, 11, 16, 16, gameObjects[i].x, gameObjects[i].y, 16, 16);
+                }
+                if(gameObjects[i].isOldWoman){
+                    ctx.drawImage(characterFront, 35, 11, 16, 16, gameObjects[i].x, gameObjects[i].y, 16, 16);
                 }
             }
         }
@@ -370,6 +421,7 @@
                 drawMap(gameMap);
                 drawLink();
                 gameObjectCollision(linkX, linkY, gameObjects, true);
+                drawGameObjects();
             },1000/fps);
         }
         console.log(gameObjects);
