@@ -426,7 +426,10 @@
             for(let i = 0; i < map.length; i++){ //this is "rectangle rectangle collision" formula
                 for(let j = 0; j < map[i].length; j++){
                     if(map[i][j] != 2 && map[i][j] != 28){ //2 is the number associated with the sprite location for link to move on
-                        if(x <= j*16+6 && x+12 >= j*16 && y+10 <= i*16+16 && y+16 >= i*16){//The idea of doing 12 or 10 rather than 16(links sprite size) 
+        // console.log(`${x} <= ${j*16+6} && ${x+12} >= ${j*16} && ${y+10} <= ${i*16+16} && ${y+16} >= ${i*16}out`)
+                        if(x <= j*16+6 && x >= j*16 && y <= i*16+16 && y >= i*16){
+        // console.log(`${x} <= ${j*16+6} && ${x+12} >= ${j*16} && ${y+10} <= ${i*16+16} && ${y+16} >= ${i*16}in`)
+                            //The idea of doing 12 or 10 rather than 16(links sprite size) 
                             return true;                                                    //is to give him some leway to make moving around tarrain easier
                         } 
                     }
