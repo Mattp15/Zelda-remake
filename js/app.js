@@ -197,7 +197,11 @@
             }
         }
 
-        const playSound = source => {}
+        const playSound = source => {
+            let sound = new Audio();
+            sound.src = source;
+            sound.play();
+        }
 
 
         const drawMap = level => {
@@ -272,9 +276,11 @@
                     if(gameObjects[i].counter%5 === 0){//counter and modulo controll the speed of the text
                         if(gameObjects[i].line1Full.length != gameObjects[i].line1Current.length){
                             gameObjects[i].line1Current = gameObjects[i].line1Full.substring(0, gameObjects[i].line1Current.length + 1);
+                            playSound('./sounds/LOZ_Text_Slow.wav');//SOUND
 
                         } else if(gameObjects[i].line2Full.length != gameObjects[i].line2Current.length){
                             gameObjects[i].line2Current = gameObjects[i].line2Full.substring(0, gameObjects[i].line2Current.length + 1);
+                            playSound('./sounds/LOZ_Text_Slow.wav');
                         }//Every pass is adding a letter to current line, which increases the lenght, which add's a letterfor the next iteration.
                     }
                     ctx.fillStyle = "white";
@@ -502,11 +508,14 @@
                                 case 13:
                                     break;
                                 case 14:
+                                    
                                     lastPickUpItem = 14;
                                     swordEquipped = 1;
+                                    playSound("./sounds/Item.mp3");
                                     break;
                             }
                             objects.splice(i, 1);
+                            animationCounter = 0;
                         }
                     }
                 }
