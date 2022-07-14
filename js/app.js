@@ -197,6 +197,8 @@
             }
         }
 
+        const playSound = source => {}
+
 
         const drawMap = level => {
             for(let i = 0; i < level.length; i++){
